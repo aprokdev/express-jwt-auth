@@ -4,6 +4,7 @@ import { IAuthController } from '@services/auth-controller/types';
 import { IDatabase } from '@services/database/types';
 import { ILogger } from '@services/logger/types';
 import { IUsersController } from '@services/users-controller/types';
+import cookieParser from 'cookie-parser';
 import express from 'express';
 import { inject, injectable } from 'inversify';
 import TYPES from './inversify.types';
@@ -27,6 +28,7 @@ export class App implements IApp {
 
     private _applyMiddlewares(): void {
         this._app.use(express.json());
+        this._app.use(cookieParser());
         this._app.use(this._authMiddleware.execute.bind(this._authMiddleware));
     }
 

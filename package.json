@@ -11,7 +11,8 @@
     "lint:fix": "eslint ./src/** --fix",
     "build": "tsc && tsc-alias",
     "prettify": "npx prettier --write .",
-    "db-update": "prisma generate"
+    "db-update": "prisma generate",
+    "seed": "npx prisma db seed"
   },
   "repository": {
     "type": "git",
@@ -42,18 +43,20 @@
     "typescript": "^4.9.4"
   },
   "dependencies": {
-    "express": "^4.18.2",
     "@aws-sdk/lib-storage": "^3.321.1",
     "@prisma/client": "^4.8.1",
+    "@types/cookie-parser": "^1.4.3",
     "busboy": "^1.6.0",
     "class-validator": "^0.14.0",
+    "cookie-parser": "^1.4.6",
     "dotenv": "^16.0.3",
+    "express": "^4.18.2",
     "inversify": "^6.0.1",
     "jsonwebtoken": "^9.0.0",
     "reflect-metadata": "^0.1.13",
     "tslog": "^4.7.1"
   },
   "prisma": {
-    "seed": "ts-node prisma/seed.js"
+    "seed": "ts-node prisma/seed.mjs"
   }
 }

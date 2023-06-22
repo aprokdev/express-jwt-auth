@@ -1,6 +1,5 @@
 import { PrismaClient } from '@prisma/client';
-import posts from './posts.json';
-import users from './users.json';
+import users from './users.json' assert { type: "json" };
 
 const prisma = new PrismaClient();
 
@@ -9,12 +8,6 @@ export async function main() {
     for (const user of users) {
         await prisma.user.create({
             data: { ...user },
-        });
-    }
-    for (const post of posts) {
-        const { created, id, ...rest } = post;
-        await prisma.post.create({
-            data: { ...rest },
         });
     }
     console.log('Done 🎉');

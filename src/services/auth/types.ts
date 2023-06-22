@@ -1,4 +1,4 @@
 export interface IAuth {
-    signToken: (email: string) => Promise<string>;
+    signToken: (email: string, expiresIn: string) => Promise<string>;
     verifyToken: (token: string) => Promise<string>;
 }

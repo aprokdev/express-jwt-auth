@@ -8,14 +8,14 @@ import { IAuth } from './types';
 export class Auth implements IAuth {
     constructor(@inject(TYPES.IENVConfig) private _env: IENVConfig) {}
 
-    public async signToken(email: string): Promise<string> {
+    public async signToken(email: string, expiresIn: string): Promise<string> {
         const secret = this._env.get('TOKEN_SECRET');
         if (!secret) {
             throw new Error('TOKEN_SECRET is absent in .env file');
         } else {
             return await sign({ email }, secret, {
                 algorithm: 'HS256',
-                expiresIn: '8h',
+                expiresIn,
             });
         }
     }

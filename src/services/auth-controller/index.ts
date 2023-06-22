@@ -1,4 +1,4 @@
-import { HTTPError, HTTPError404, HTTPError422 } from '@errors/index';
+import { HTTPError, HTTPError404, HTTPError406, HTTPError422 } from '@errors/index';
 import { AuthGuard } from '@middlewares/auth-guard';
 import { IAuth } from '@services/auth/types';
 import { BaseController } from '@services/base-controller';
@@ -19,7 +19,7 @@ export class AuthController extends BaseController implements IAuthController {
             {
                 path: '/refresh',
                 func: this.refresh,
-                method: 'get',
+                method: 'post',
                 middlewares: [new AuthGuard()],
             },
         ]);
@@ -30,15 +30,19 @@ export class AuthController extends BaseController implements IAuthController {
         res.status(error?.status || 500).json({ success: false, message: error.message });
     }
 
-    public async refresh({ body }: Request, res: Response, next: NextFunction): Promise<void> {
+    public async refresh({ cookies }: Request, res: Response, next: NextFunction): Promise<void> {
         try {
-            // const isUserValid = await this._users.validateUser(body);
-            // if (!isUserValid) {
-            //     throw new HTTPError422('Provided credentials are invalid');
-            // }
-            // const jwt = await this._auth.signToken(body.email);
-            // res.status(200).json({ success: true, jwt });
-            next();
+            if (cookies?.rt) {
+                const refreshToken = cookies.rt;
+
+                const email = await this._auth.verifyToken(refreshToken);
+                console.log(email);
+
+                const access_token = await this._auth.signToken(email, '10m');
+                res.status(200).json({ access_token });
+            } else {
+                throw new HTTPError406('Unauthorized');
+            }
         } catch (error: any) {
             this._errorHandler(error, res);
         }
