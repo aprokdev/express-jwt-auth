@@ -59,7 +59,7 @@ export class UsersController extends BaseController implements IUsersController 
             }
             const access_token = await this._auth.signToken(body.email, '10m');
             const refresh_token = await this._auth.signToken(body.email, '1d');
-            const ac_expires_at = Date.now() + 60 * 10 * 1000; // now + 10m
+            const at_expires_at = Date.now() + 60 * 10 * 1000; // now + 10m
 
             res.cookie('rt', refresh_token, {
                 httpOnly: true,
@@ -67,7 +67,11 @@ export class UsersController extends BaseController implements IUsersController 
                 secure: true,
                 maxAge: 60 * 60 * 24, // one day
             });
-            res.status(200).json({ success: true, access_token, ac_expires_at });
+            res.status(200).json({
+                success: true,
+                access_token,
+                at_expires_at,
+            });
         } catch (error: any) {
             this._errorHandler(error, res);
         }

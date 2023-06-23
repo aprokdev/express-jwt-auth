@@ -20,7 +20,6 @@ export class AuthController extends BaseController implements IAuthController {
                 path: '/refresh',
                 func: this.refresh,
                 method: 'post',
-                middlewares: [new AuthGuard()],
             },
         ]);
     }
@@ -34,13 +33,12 @@ export class AuthController extends BaseController implements IAuthController {
         try {
             if (cookies?.rt) {
                 const refreshToken = cookies.rt;
-
                 const email = await this._auth.verifyToken(refreshToken);
-                console.log(email);
-
                 const access_token = await this._auth.signToken(email, '10m');
-                res.status(200).json({ access_token });
+                const at_expires_at = Date.now() + 60 * 10 * 1000; // now + 10m
+                res.status(200).json({ access_token, at_expires_at });
             } else {
+                this._logger.error('[AuthController Error]: rt cookie is absent');
                 throw new HTTPError406('Unauthorized');
             }
         } catch (error: any) {

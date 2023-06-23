@@ -1,5 +1,6 @@
 import { IAuth } from '@services/auth/types';
 import { IDatabase } from '@services/database/types';
+import { ILogger } from '@services/logger/types';
 import TYPES from '@src/inversify.types';
 import { NextFunction, Response } from 'express';
 import { inject, injectable } from 'inversify';
@@ -11,6 +12,7 @@ export class AuthMiddleware implements IMIddleware {
     constructor(
         @inject(TYPES.IAuth) private _auth: IAuth,
         @inject(TYPES.IDatabase) private _db: IDatabase,
+        @inject(TYPES.ILogger) private _logger: ILogger,
     ) {}
 
     public async execute(req: IRequestWithUser, res: Response, next: NextFunction): Promise<void> {
@@ -27,7 +29,8 @@ export class AuthMiddleware implements IMIddleware {
                     req.user = user;
                 }
                 next();
-            } catch (error) {
+            } catch (error: any) {
+                this._logger.error(`[Auth Middleware Error]: ${error.message}`);
                 next();
             }
         } else {
