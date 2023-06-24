@@ -6,9 +6,14 @@ import { ILogger } from '@services/logger/types';
 import { IUsersController } from '@services/users-controller/types';
 import cookieParser from 'cookie-parser';
 import express from 'express';
+import fs from 'fs';
 import { inject, injectable } from 'inversify';
+import swaggerUi from 'swagger-ui-express';
+import swaggerJSON from '../swagger/output.json';
 import TYPES from './inversify.types';
 import { IApp } from './types';
+
+// const swaggerFile = JSON.parse(file);
 
 @injectable()
 export class App implements IApp {
@@ -35,6 +40,7 @@ export class App implements IApp {
     private _applyControllers(): void {
         this._app.use('/users', this._userController.router);
         this._app.use('/auth', this._authController.router);
+        this._app.use('/doc', swaggerUi.serve, swaggerUi.setup(swaggerJSON));
     }
 
     private _useExeptionFilters(): void {

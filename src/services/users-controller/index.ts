@@ -52,6 +52,17 @@ export class UsersController extends BaseController implements IUsersController 
     }
 
     public async login({ body }: Request, res: Response, next: NextFunction): Promise<void> {
+        // #swagger.description = 'Login user'
+        /*  #swagger.parameters['email'] = {
+                in: 'body',
+                description: 'email of registered user',
+                schema: { $ref: '#/definitions/UserLogin' },
+                required: true,
+        } */
+        /* #swagger.responses[200] = {
+            description: 'Example successful response',
+            schema: { $ref: '#/definitions/UserLogin' }
+        } */
         try {
             const isUserValid = await this._users.validateUser(body);
             if (!isUserValid) {

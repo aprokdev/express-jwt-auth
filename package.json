@@ -1,5 +1,5 @@
 {
-  "name": "posteveryday-api",
+  "name": "express-jwt-auth",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -12,23 +12,25 @@
     "build": "tsc && tsc-alias",
     "prettify": "npx prettier --write .",
     "db-update": "prisma generate",
-    "seed": "npx prisma db seed"
+    "seed": "npx prisma db seed",
+    "gen": "node ./swagger/index.js"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/aprokdev/blogs-api.git"
+    "url": "git+https://github.com/aprokdev/express-jwt-auth.git"
   },
   "author": "Anton Prokopenko",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/aprokdev/blogs-api/issues"
+    "url": "https://github.com/aprokdev/express-jwt-auth/issues"
   },
-  "homepage": "https://github.com/aprokdev/blogs-api#readme",
+  "homepage": "https://github.com/aprokdev/express-jwt-auth#readme",
   "devDependencies": {
     "@trivago/prettier-plugin-sort-imports": "^4.0.0",
     "@types/bcryptjs": "^2.4.2",
     "@types/express": "^4.17.15",
     "@types/jsonwebtoken": "^9.0.0",
+    "@types/swagger-ui-express": "^4.1.3",
     "@typescript-eslint/eslint-plugin": "^5.48.0",
     "@typescript-eslint/parser": "^5.48.0",
     "eslint": "^8.31.0",
@@ -37,6 +39,8 @@
     "nodemon": "^2.0.20",
     "prettier": "^2.8.1",
     "prisma": "^4.8.1",
+    "swagger-autogen": "^2.23.2",
+    "swagger-ui-express": "^4.6.3",
     "ts-node": "^10.9.1",
     "tsc-alias": "^1.8.6",
     "tsconfig-paths": "^4.2.0",
