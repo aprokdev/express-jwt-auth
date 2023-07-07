@@ -2,7 +2,7 @@
   "swagger": "2.0",
   "info": {
     "title": "User JWT auth service API",
-    "description": "My todo API",
+    "description": "",
     "version": "1.0.0"
   },
   "host": "localhost:8000",
@@ -10,32 +10,41 @@
   "schemes": [
     "http"
   ],
-  "paths": {},
-  "definitions": {
-    "Todo": {
-      "type": "object",
-      "properties": {
-        "id": {
-          "type": "string",
-          "example": "1"
-        },
-        "text": {
-          "type": "string",
-          "example": "test"
-        },
-        "done": {
-          "type": "boolean",
-          "example": false
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {
+    "/users/login": {
+      "post": {
+        "description": "login user",
+        "operationId": "loginUser",
+        "parameters": [
+          {
+            "name": "tags",
+            "in": "body",
+            "description": "Required body parameters",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/UserCredentials"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success login response",
+            "schema": {
+              "$ref": "#/definitions/UserLoginSuccess"
+            }
+          }
         }
       }
-    },
-    "Todos": {
-      "type": "array",
-      "items": {
-        "$ref": "#/definitions/Todo"
-      }
-    },
-    "UserLogin": {
+    }
+  },
+  "definitions": {
+    "UserLoginSuccess": {
       "type": "object",
       "properties": {
         "success": {
@@ -52,21 +61,19 @@
         }
       }
     },
-    "Changes": {
+    "UserCredentials": {
       "type": "object",
+      "required": [
+        "email", "password"
+      ],
       "properties": {
-        "changes": {
-          "type": "object",
-          "properties": {
-            "text": {
-              "type": "string",
-              "example": "test"
-            },
-            "done": {
-              "type": "boolean",
-              "example": true
-            }
-          }
+        "email": {
+          "type": "string",
+          "example": "johndoe@gmail.com"
+        },
+        "password": {
+          "type": "string",
+          "example": "123123"
         }
       }
     }

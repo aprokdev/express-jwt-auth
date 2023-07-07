@@ -1,0 +1,294 @@
+{
+    "swagger": "2.0",
+    "info": {
+      "title": "User JWT Auth service OpenAPI",
+      "description": "",
+      "version": "1.0.0"
+    },
+    "host": "localhost:8000",
+    "basePath": "/",
+    "schemes": [
+      "http"
+    ],
+    "components": {
+      "securitySchemes": {
+        "bearerAuth": {
+          "type": "http",
+          "scheme": "bearer",
+          "bearerFormat": "JWT"
+        }
+      }
+    },
+    "security": {
+      "bearerAuth": []   
+    },
+    "consumes": [
+      "application/json"
+    ],
+    "produces": [
+      "application/json"
+    ],
+    "paths": {
+      "/users/register": {
+        "post": {
+          "tags": ["Users"],
+          "summary": "Register new user",
+          "operationId": "registerUser",
+          "parameters": [
+            {
+              "name": "fields",
+              "in": "body",
+              "required": true,
+              "schema": {
+                "$ref": "#/definitions/UserRegister"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Success response",
+              "schema": {
+                "$ref": "#/definitions/UserRegisterSuccess"
+              }
+            },
+            "422": {
+              "description": "Useer already exist",
+              "schema": {
+                "$ref": "#/definitions/UserRegisterUserExist"
+              }
+            }
+          }
+        }
+      },
+      "/users/login": {
+        "post": {
+          "tags": ["Users"],
+          "summary": "Login user",
+          "operationId": "loginUser",
+          "parameters": [
+            {
+              "name": "fields",
+              "in": "body",
+              "required": true,
+              "schema": {
+                "$ref": "#/definitions/UserCredentials"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Success response",
+              "schema": {
+                "$ref": "#/definitions/UserLoginSuccess"
+              }
+            },
+            "422": {
+                "description": "Wrong credentials response",
+                "schema": {
+                  "$ref": "#/definitions/UserLoginWrongCredentials"
+                }
+            }
+          }
+        }
+      },
+      "/users": {
+        "get": {
+          "tags": ["Users"],
+          "summary": "Get user data",
+          "operationId": "getUser",
+          "security": {
+            "bearerAuth": []
+          },
+          "parameters": [
+            {
+              "name": "email",
+              "type": "string",
+              "in": "query",
+              "required": true
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Success response",
+              "schema": {
+                "$ref": "#/definitions/UserData"
+              }
+            },
+            "401": {
+              "description": "Unauthorized response",
+              "schema": {
+                "$ref": "#/definitions/UserData"
+              }
+            }
+          }
+        }
+      },
+      "/auth/refresh": {
+        "post": {
+          "tags": ["Auth"],
+          "summary": "Refresh token",
+          "operationId": "refreshToken",
+          "parameters": [
+            {
+              "name": "rt",
+              "description": "Refresh token passed in httpOnly cookie from client",
+              "in": "cookie",
+              "type": "string",
+              "required": true,
+              "schema": ""
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Success response",
+              "schema": {
+                "$ref": "#/definitions/RefreshTokenSuccess"
+              }
+            },
+            "401": {
+              "description": "Unauthorized response",
+              "schema": {
+                "$ref": "#/definitions/UserData"
+              }
+            }
+          }
+        }
+      }
+    },
+    "definitions": {
+      "UserLoginSuccess": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean",
+            "example": true
+          },
+          "access_token": {
+            "type": "string",
+            "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImpvaG5kb2VAZ21haWwuY29tIiwiaWF0IjoxNjg3NTY2NDAzLCJleHAiOjE2ODc1NjcwMDN9.KAbmo5Hxmt4OeUEn1P6VdSbdbKdKq-ZdAKN28El3nKs"
+          },
+          "at_expires_at": {
+            "type": "number",
+            "example": 1687567003493
+          }
+        }
+      },
+      "UserRegisterSuccess": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean",
+            "example": true
+          }
+        }
+      },
+      "UserLoginWrongCredentials": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean",
+            "example": false
+          },
+          "message": {
+            "type": "string",
+            "example": "Provided credentials are invalid"
+          }
+        }
+      },
+      "UserCredentials": {
+        "type": "object",
+        "required": [
+          "email", "password"
+        ],
+        "properties": {
+          "email": {
+            "type": "string",
+            "example": "johndoe@gmail.com"
+          },
+          "password": {
+            "type": "string",
+            "example": "123123"
+          }
+        }
+      },
+      "UserRegister": {
+        "type": "object",
+        "required": [
+          "first_name", "last_name", "email", "password"
+        ],
+        "properties": {
+          "email": {
+            "type": "string",
+            "example": "janedoe@gmail.com"
+          },
+          "first_name": {
+            "type": "string",
+            "example": "Jane"
+          },
+          "last_name": {
+            "type": "string",
+            "example": "Doe"
+          },
+          "password": {
+            "type": "string",
+            "example": "123123"
+          }
+        }
+      },
+      "UserRegisterUserExist": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean",
+            "example": false
+          },
+          "message": {
+            "type": "string",
+            "example": "User with provided email is already exist"
+          }
+        }
+      },
+      "UserData": {
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string",
+            "example": "janedoe@gmail.com"
+          },
+          "first_name": {
+            "type": "string",
+            "example": "Jane"
+          },
+          "last_name": {
+            "type": "string",
+            "example": "Doe"
+          },
+          "id": {
+            "type": "number",
+            "example": 2
+          },
+          "role": {
+            "type": "string",
+            "example": "admin"
+          },
+          "image": {
+            "type": "string",
+            "example": ""
+          }
+        }
+      },
+      "RefreshTokenSuccess": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean",
+            "example": true
+          },
+          "access_token": {
+            "type": "string",
+            "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImpvaG5kb2VAZ21haWwuY29t.44fGKQB1mb39bvbaxLt4b40vJnPSxeX9G3iKbyeXBGQ"
+          }
+        }
+      }
+    }
+  }

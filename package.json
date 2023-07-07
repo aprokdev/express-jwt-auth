@@ -13,7 +13,7 @@
     "prettify": "npx prettier --write .",
     "db-update": "prisma generate",
     "seed": "npx prisma db seed",
-    "gen": "node ./swagger/index.js"
+    "gen": "node ./swagger/index.mjs"
   },
   "repository": {
     "type": "git",
