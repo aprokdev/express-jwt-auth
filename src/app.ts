@@ -8,7 +8,7 @@ import cookieParser from 'cookie-parser';
 import express from 'express';
 import { inject, injectable } from 'inversify';
 import swaggerUi from 'swagger-ui-express';
-import swaggerJSON from '../swagger.json';
+import swaggerJSON from '../swagger3.json';
 import TYPES from './inversify.types';
 import { IApp } from './types';
 

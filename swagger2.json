@@ -10,17 +10,10 @@
     "schemes": [
       "http"
     ],
-    "components": {
-      "securitySchemes": {
-        "bearerAuth": {
-          "type": "http",
-          "scheme": "bearer",
-          "bearerFormat": "JWT"
-        }
-      }
-    },
-    "security": {
-      "bearerAuth": []   
+    "securityDefinitions ": {
+      "BasicAuth": {
+        "type": "basic"
+      }  
     },
     "consumes": [
       "application/json"
@@ -97,7 +90,7 @@
           "summary": "Get user data",
           "operationId": "getUser",
           "security": {
-            "bearerAuth": []
+            "basicAuth": []
           },
           "parameters": [
             {
@@ -117,7 +110,7 @@
             "401": {
               "description": "Unauthorized response",
               "schema": {
-                "$ref": "#/definitions/UserData"
+                "$ref": "#/definitions/UnauthorizedRequest"
               }
             }
           }
@@ -287,6 +280,19 @@
           "access_token": {
             "type": "string",
             "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImpvaG5kb2VAZ21haWwuY29t.44fGKQB1mb39bvbaxLt4b40vJnPSxeX9G3iKbyeXBGQ"
+          }
+        }
+      },
+      "UnauthorizedRequest": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean",
+            "example": false
+          },
+          "message": {
+            "type": "string",
+            "example": "You are not authorized"
           }
         }
       }
