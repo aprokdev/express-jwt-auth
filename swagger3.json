@@ -2,13 +2,13 @@
     "openapi": "3.0.0",
     "info": {
       "title": "Users service",
-      "description": "REST API Service for creating, storing and authenticationg users. First login, then put access_token to Authentication to make accesible protected routes",
+      "description": "REST API Service for creating, storing and authenticating users. First login, then put access_token to Authentication to make accesible protected routes",
       "version": "1.0.0"
     },
     "servers": [
       {
         "url": "http://localhost:8000",
-        "description": "Development server"
+        "description": "local development server"
       }
     ],
     "security": [
@@ -91,6 +91,45 @@
                     }
                   }
                 }
+            }
+          }
+        }
+      },
+      "/users/update": {
+        "put": {
+          "tags": ["Users"],
+          "description": "Update existing user data",
+          "summary": "Update existing user data",
+          "operationId": "updateUser",
+          "requestBody": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserUpdate"
+                }
+              }
+            }
+          },
+          "responses": {
+            "200": {
+              "description": "Success response",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/UserData"
+                  }
+                }
+              }
+            },
+            "422": {
+              "description": "Useer already exist",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/UserRegisterUserExist"
+                  }
+                }
+              }
             }
           }
         }
@@ -257,6 +296,28 @@
             }
           }
         },
+        "UserUpdate": {
+          "type": "object",
+          "required": [ "email" ],
+          "properties": {
+            "email": {
+              "type": "string",
+              "example": "janedoe@gmail.com"
+            },
+            "first_name": {
+              "type": "string",
+              "example": "Karen"
+            },
+            "last_name": {
+              "type": "string",
+              "example": "Doe"
+            },
+            "password": {
+              "type": "string",
+              "example": "111222"
+            }
+          }
+        },
         "UserRegisterUserExist": {
           "type": "object",
           "properties": {
@@ -274,29 +335,39 @@
           "type": "object",
           "properties": {
             "email": {
-              "type": "string",
-              "example": "janedoe@gmail.com"
+              "type": "boolean",
+              "example": true
             },
-            "first_name": {
-              "type": "string",
-              "example": "Jane"
-            },
-            "last_name": {
-              "type": "string",
-              "example": "Doe"
-            },
-            "id": {
-              "type": "number",
-              "example": 2
-            },
-            "role": {
-              "type": "string",
-              "example": "admin"
-            },
-            "image": {
-              "type": "string",
-              "example": ""
+            "user": {
+              "type": "object",
+              "example": {
+                "email": {
+                  "type": "string",
+                  "example": "janedoe@gmail.com"
+                },
+                "first_name": {
+                  "type": "string",
+                  "example": "Jane"
+                },
+                "last_name": {
+                  "type": "string",
+                  "example": "Doe"
+                },
+                "id": {
+                  "type": "number",
+                  "example": 2
+                },
+                "role": {
+                  "type": "string",
+                  "example": "admin"
+                },
+                "image": {
+                  "type": "string",
+                  "example": ""
+                }
+              }
             }
+            
           }
         },
         "RefreshTokenSuccess": {

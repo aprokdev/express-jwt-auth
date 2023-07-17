@@ -4,7 +4,7 @@ import { validatePassword } from '@services/users/user-entity';
 import { UserEntity } from '@services/users/user-entity';
 import TYPES from '@src/inversify.types';
 import { inject, injectable } from 'inversify';
-import { UserLoginDTO, UserRegisterDTO } from './dto';
+import { UserLoginDTO, UserRegisterDTO, UserUpdateDTO } from './dto';
 import { IUser, IUsers } from './types';
 
 @injectable()
@@ -37,5 +37,35 @@ export class Users implements IUsers {
         }
         const newUser = new UserEntity(body);
         return await this._db.instance.user.create({ data: newUser });
+    }
+
+    public async updateUser(body: UserUpdateDTO): Promise<IUser> {
+        if (body.email === undefined) {
+            throw new HTTPError422('email field is required');
+        }
+
+        const user = await this.findByEmail(body.email);
+        const { email, password, first_name, last_name, image } = body;
+
+        let hashedPasswordData = {};
+        if (password) {
+            hashedPasswordData = UserEntity.generateHash(password);
+        }
+
+        const updatedUserData = {
+            ...user,
+            email,
+            first_name,
+            last_name,
+            image,
+            ...hashedPasswordData,
+        };
+
+        return await this._db.instance.user.update({
+            where: {
+                email: body.email,
+            },
+            data: updatedUserData,
+        });
     }
 }

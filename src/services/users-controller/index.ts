@@ -34,6 +34,12 @@ export class UsersController extends BaseController implements IUsersController 
                 func: this.login,
                 method: 'post',
             },
+            {
+                path: '/update',
+                func: this.updateUserData,
+                method: 'put',
+                middlewares: [new AuthGuard()],
+            },
         ]);
     }
 
@@ -77,6 +83,17 @@ export class UsersController extends BaseController implements IUsersController 
         }
     }
 
+    public async updateUserData({ body }: Request, res: Response): Promise<void> {
+        try {
+            const user = await this._users.updateUser(body);
+            const { hash, salt, ...rest } = user;
+            this.logger.trace(`[updateUserData: "${body.email}"]`, rest);
+            res.status(200).json({ success: true, user: rest });
+        } catch (error: any) {
+            this._errorHandler(error, res);
+        }
+    }
+
     public async info(req: Request, res: Response, next: NextFunction): Promise<void> {
         try {
             const email = req.query.email as string;
@@ -87,7 +104,7 @@ export class UsersController extends BaseController implements IUsersController 
             if (user) {
                 const { hash, salt, ...rest } = user;
                 this.logger.trace(`[/users?email="${email}"]`, rest);
-                res.json(rest);
+                res.json({ success: true, user: rest });
             } else {
                 throw new HTTPError404('User is not found');
             }

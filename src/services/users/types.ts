@@ -1,10 +1,11 @@
 import { User } from '@prisma/client';
-import { UserLoginDTO, UserRegisterDTO } from './dto';
+import { UserLoginDTO, UserRegisterDTO, UserUpdateDTO } from './dto';
 
 export interface IUsers {
     findByEmail: (email: string) => Promise<User | null>;
     create: (user: UserRegisterDTO) => Promise<IUser>;
     validateUser: (user: UserLoginDTO) => Promise<boolean>;
+    updateUser: (user: UserUpdateDTO) => Promise<IUser>;
 }
 
 export interface IRegisterUserBody {

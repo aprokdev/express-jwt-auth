@@ -32,9 +32,16 @@ export class UserEntity implements IUserEntity {
         this.email = email;
         this.first_name = first_name;
         this.last_name = last_name;
-        this.salt = crypto.randomBytes(32).toString('hex');
-        this.hash = crypto.pbkdf2Sync(password, this.salt, 10000, 64, 'sha512').toString('hex');
+        const { salt, hash } = UserEntity.generateHash(password);
+        this.salt = salt;
+        this.hash = hash;
         this.role = 'user';
         this.image = '';
+    }
+
+    static generateHash(password: string): hashedPasswordData {
+        const salt = crypto.randomBytes(32).toString('hex');
+        const hash = crypto.pbkdf2Sync(password, salt, 10000, 64, 'sha512').toString('hex');
+        return { salt, hash };
     }
 }
