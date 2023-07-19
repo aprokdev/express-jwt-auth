@@ -25,6 +25,12 @@ export class UsersController extends BaseController implements IUsersController 
                 middlewares: [new AuthGuard()],
             },
             {
+                path: '/',
+                func: this.deleteUser,
+                method: 'delete',
+                middlewares: [new AuthGuard()],
+            },
+            {
                 path: '/register',
                 func: this.register,
                 method: 'post',
@@ -108,6 +114,19 @@ export class UsersController extends BaseController implements IUsersController 
             } else {
                 throw new HTTPError404('User is not found');
             }
+        } catch (error: any) {
+            this._errorHandler(error, res);
+        }
+    }
+
+    public async deleteUser(req: Request, res: Response, next: NextFunction): Promise<void> {
+        try {
+            const email = req.query.email as string;
+            if (!email) {
+                throw new HTTPError422('"email" param is required');
+            }
+            await this._users.deleteUser(email);
+            res.json({ success: true });
         } catch (error: any) {
             this._errorHandler(error, res);
         }

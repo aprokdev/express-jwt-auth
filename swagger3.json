@@ -172,6 +172,44 @@
               }
             }
           }
+        },
+        "delete": {
+          "tags": ["Users"],
+          "description": "Delete user by email [PROTECTED]",
+          "summary": "Delete user by email [PROTECTED]",
+          "operationId": "deleteUser",
+          "parameters": [
+            {
+              "name": "email",
+              "in": "query",
+              "required": true,
+              "schema": {
+                "$ref": "#/components/schemas/UserEmail"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Success response",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/UserDeleteSuccess"
+                  }
+                }
+              }
+            },
+            "401": {
+              "description": "Unauthorized response",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/UnauthorizedRequest"
+                  }
+                }
+              }
+            }
+          }
         }
       },
       "/auth/refresh": {
@@ -334,7 +372,7 @@
         "UserData": {
           "type": "object",
           "properties": {
-            "email": {
+            "success": {
               "type": "boolean",
               "example": true
             },
@@ -401,6 +439,15 @@
         },
         "UserEmail": {
           "type": "string"
+        },
+        "UserDeleteSuccess": {
+          "type": "object",
+          "properties": {
+            "success": {
+              "type": "boolean",
+              "example": true
+            }
+          }
         }
       },
       "securitySchemes": {

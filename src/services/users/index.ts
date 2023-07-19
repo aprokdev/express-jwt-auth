@@ -68,4 +68,12 @@ export class Users implements IUsers {
             data: updatedUserData,
         });
     }
+
+    public async deleteUser(email: string): Promise<IUser> {
+        return await this._db.instance.user.delete({
+            where: {
+                email,
+            },
+        });
+    }
 }

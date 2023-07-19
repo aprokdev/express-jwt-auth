@@ -6,6 +6,7 @@ export interface IUsers {
     create: (user: UserRegisterDTO) => Promise<IUser>;
     validateUser: (user: UserLoginDTO) => Promise<boolean>;
     updateUser: (user: UserUpdateDTO) => Promise<IUser>;
+    deleteUser: (email: string) => Promise<IUser>;
 }
 
 export interface IRegisterUserBody {
