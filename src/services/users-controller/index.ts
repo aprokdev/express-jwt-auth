@@ -19,6 +19,16 @@ export class UsersController extends BaseController implements IUsersController 
         super(_logger, 'users');
         this.bindRoutes([
             {
+                path: '/register',
+                func: this.register,
+                method: 'post',
+            },
+            {
+                path: '/login',
+                func: this.login,
+                method: 'post',
+            },
+            {
                 path: '/',
                 func: this.info,
                 method: 'get',
@@ -29,16 +39,6 @@ export class UsersController extends BaseController implements IUsersController 
                 func: this.deleteUser,
                 method: 'delete',
                 middlewares: [new AuthGuard()],
-            },
-            {
-                path: '/register',
-                func: this.register,
-                method: 'post',
-            },
-            {
-                path: '/login',
-                func: this.login,
-                method: 'post',
             },
             {
                 path: '/update',

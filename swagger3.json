@@ -98,8 +98,8 @@
       "/users/update": {
         "put": {
           "tags": ["Users"],
-          "description": "Update existing user data",
-          "summary": "Update existing user data",
+          "description": "Update existing user data [PROTECTED]",
+          "summary": "Update existing user data [PROTECTED]",
           "operationId": "updateUser",
           "requestBody": {
             "content": {
